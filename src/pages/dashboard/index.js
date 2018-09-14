@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { getJson } from '../../common/http'
+import { getJson } from '../../common/http';
+import Table from '../../common/components/table';
 
 class Dashboard extends Component {
   state = {
@@ -15,8 +16,7 @@ class Dashboard extends Component {
     const missions = this.state.missions;
     return (
       <div>
-        <p>Dashboard</p>
-          { missions.map(mission => <div>{mission.urls[0].catalog_fits}</div>)}
+          <Table data={missions} />
       </div>
     );
   }
