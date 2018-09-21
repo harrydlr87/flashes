@@ -3,3 +3,28 @@ body {
   padding: 0;
   font-family: sans-serif;
 }
+
+.header {
+  text-align: left;
+  padding: 20px;
+  font-weight: bold;
+  color: white;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.header a {
+  text-decoration: none;
+  color: white;
+}
+
+.header img {
+  width: 200px;
+}
+
+
+.dashboard, .plot {
+  margin: 0 auto;
+  max-width: 75%;
+}
+

@@ -38,7 +38,6 @@ export const checkStatus = (response) => {
  * Performs a request using the fetch api
  */
 export const doFetch = (path, options = {}) => {
-    debugger;
     let timeoutId;
     const setTimeoutReference = (timeout) => { timeoutId = timeout; };
     const timeoutPromise = createRequestTimeout(setTimeoutReference);

@@ -1,12 +1,10 @@
-import React, { Component } from 'react';
-import Dashboard from '../pages/dashboard';
+import React from 'react';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { faChartBar } from '@fortawesome/free-solid-svg-icons';
+import Routes from './routes';
 
-class App extends Component {
-    render() {
-        return (
-            <Dashboard />
-        );
-    }
-}
+library.add(faChartBar);
+
+const App = () => <Routes />;
 
 export default App;
