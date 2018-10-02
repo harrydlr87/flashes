@@ -1,0 +1,13 @@
+.filter {
+  padding: 0 20px;
+}
+
+.input-container input, .input-container select {
+  display: block;
+  padding: 10px;
+  background: #e5e5e5;
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  width:100%;
+  box-sizing: border-box;
+}

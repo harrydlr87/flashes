@@ -22,8 +22,16 @@ body {
   width: 200px;
 }
 
+.dashboard {
+  padding: 0 50px 0 25px;
+  display: flex;
+}
 
-.dashboard, .plot {
+.dashboard .table {
+  flex-grow: 1;
+}
+
+.plot {
   margin: 0 auto;
   max-width: 75%;
 }
