@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { DebounceInput } from 'react-debounce-input';
 import './filter.css';
 import getJson from "../../http/methods/get";
 
@@ -31,22 +32,27 @@ class Filter extends Component {
       <div className="filter">
         <section className="input-container">
           <div>
-            <input type="text" placeholder="Source name" onChange={this.onFilter('name')} />
+            <DebounceInput
+              minLength={3}
+              debounceTimeout={500}
+              placeholder="Source name"
+              onChange={this.onFilter('name')}
+            />
           </div>
           {missionOptions && (
             <div>
-              <select name="mission" onChange={this.onFilter('mission')}>
-                <option value="" selected>All missions</option>
-                { missionOptions.map((mission) => <option value={mission}>{mission}</option>)}
+              <select name="mission" onChange={this.onFilter('mission')} defaultValue="All missions">
+                <option value="">All missions</option>
+                { missionOptions.map((mission, index) => <option key={index} value={mission}>{mission}</option>)}
               </select>
             </div>
           )}
 
           {typeOptions && (
             <div>
-              <select name="type" onChange={this.onFilter('type')}>
-                <option value="" selected>All types</option>
-                { typeOptions.map((type) => <option value={type}>{type}</option>)}
+              <select name="type" onChange={this.onFilter('type')} defaultValue="All types">
+                <option value="">All types</option>
+                { typeOptions.map((type, index) => <option key={index} value={type}>{type}</option>)}
               </select>
             </div>
           )}

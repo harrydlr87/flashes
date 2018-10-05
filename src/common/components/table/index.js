@@ -21,6 +21,11 @@ const Table = ({
                             accessor: "source"
                         },
                         {
+                          Header: "Activity rate",
+                          id: "activityValue",
+                          accessor: ({ activityValue }) => activityValue && activityValue + '%',
+                        },
+                        {
                             Header: "Plot",
                             accessor: "plotIcon"
                         },

@@ -14,31 +14,38 @@ class Dashboard extends Component {
     activeFilters: {},
   };
 
-  async componentWillMount() {
-      const missions = await getJson('/missions');
-      const sourcesData = await getJson('/sources');
+  static parseSources(sources) {
+    return sources.docs.map(source => ({ ...source, plotIcon: <PlotLink id={source._id} />}));
+  }
 
-      const sources = sourcesData.docs.map(source => ({ ...source, plotIcon: <PlotLink id={source._id} />}));
-      this.setState({ missions, sources: { ...sourcesData, items: sources } });
+  async componentWillMount() {
+    const missions = await getJson('/missions');
+    const sourcesData = await getJson('/sources');
+
+    const sources = Dashboard.parseSources(sourcesData);
+    this.setState({ missions, sources: { ...sourcesData, items: sources } });
   }
 
   async onPageChange({ page, pageSize }) {
-    const sourcesData = await getJson(`/sources?page=${page + 1}&limit=${pageSize}`); // TODO keep filters active
+    const activeFilters = this.state.activeFilters;
+    const sourcesData = await getJson('/sources', { page: page + 1, limit: pageSize, ...activeFilters });
 
-      // TODO avoid duplicating code
-      const sources = sourcesData.docs.map(source => ({ ...source, plotIcon: <PlotLink id={source._id} />}));
-      this.setState({ sources: { ...sourcesData, items: sources } });
-  }
-
-  async onFilter({ type, name, mission }) {
-    const sourcesData = await getJson(`/sources?type=${type}&name=${name}&mission=${mission}`);
-
-    const sources = sourcesData.docs.map(source => ({ ...source, plotIcon: <PlotLink id={source._id} />}));
+    const sources = Dashboard.parseSources(sourcesData);
     this.setState({ sources: { ...sourcesData, items: sources } });
   }
 
+  async onFilter({ type, name, mission }) {
+    const activeFilters = { type, name, mission };
+    const sourcesData = await getJson('/sources', activeFilters);
+
+    const sources = Dashboard.parseSources(sourcesData);
+    this.setState({
+      sources: { ...sourcesData, items: sources },
+      activeFilters,
+    });
+  }
+
   render() {
-    const missions = this.state.missions;
     const { items, pages } = this.state.sources;
 
     return (
