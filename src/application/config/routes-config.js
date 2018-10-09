@@ -9,4 +9,7 @@ export const routes = {
     plot: {
         path: '/plot/:id',
     },
+    profile: {
+      path: '/profile',
+    },
 };
