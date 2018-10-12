@@ -2,6 +2,7 @@ import React from 'react';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 import Layout from './components/layout';
 import { routes } from './config/routes-config';
+import PrivateRoute from './components/private-route';
 
 // Pages
 import Dashboard from '../pages/dashboard';
@@ -14,7 +15,7 @@ const Routes = () => (
             <Switch>
                 <Route exact path={routes.dashboard.path} component={Dashboard} />
                 <Route exact path={routes.plot.path} component={Plot} />
-                <Route exact path={routes.profile.path} component={Profile} />
+                <PrivateRoute exact path={routes.profile.path} component={Profile} />
             </Switch>
         </Layout>
     </BrowserRouter>

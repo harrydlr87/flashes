@@ -15,7 +15,11 @@ class Dashboard extends Component {
   };
 
   static parseSources(sources) {
-    return sources.docs.map(source => ({ ...source, plotIcon: <PlotLink id={source._id} />}));
+    return sources.docs.map(source => ({
+      ...source,
+      plotIcon: <PlotLink id={source._id} />,
+      actions: <FontAwesomeIcon icon="rss" />,
+    }));
   }
 
   async componentWillMount() {
