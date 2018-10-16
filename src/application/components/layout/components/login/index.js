@@ -22,7 +22,6 @@ class Login extends React.Component {
     e.preventDefault();
     const { passwordInput, emailInput } = this;
     const response = await this.props.login(emailInput.value, passwordInput.value);
-    debugger;
 
     if(response.error) {
       this.setState({ error: response.error });

@@ -26,7 +26,7 @@ const getColumns = (user) => {
     },
     {
       Header: "Mission",
-      accessor: "tool_name",
+      accessor: "mission",
     },
     {
       Header: "BII",

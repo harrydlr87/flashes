@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { getJson } from '../../common/http';
+import { getJson, postJson } from '../../common/http';
 import Table from '../../common/components/table';
 import Filter from '../../common/components/filter';
 
 const PlotLink = ({ id }) => <NavLink exact to={`/plot/${id}`}><FontAwesomeIcon icon="chart-bar" /></NavLink>;
+const Subscribe = ({ onClick }) => <span onClick={onClick}><FontAwesomeIcon icon="rss" /></span>;
 
 class Dashboard extends Component {
   state = {
@@ -14,11 +15,15 @@ class Dashboard extends Component {
     activeFilters: {},
   };
 
+  static async subscribe(sourceId) {
+    await postJson('/users/subscribe', { sourceId });
+  }
+
   static parseSources(sources) {
     return sources.docs.map(source => ({
       ...source,
       plotIcon: <PlotLink id={source._id} />,
-      actions: <FontAwesomeIcon icon="rss" />,
+      actions: <Subscribe onClick={() => Dashboard.subscribe(source._id)} />,
     }));
   }
 
