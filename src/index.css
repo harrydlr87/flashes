@@ -35,3 +35,14 @@ body {
   max-width: 75%;
 }
 
+.recharts-layer.recharts-scatter-symbol {
+  width: 2px;
+  height: 2px;
+}
+
+.recharts-layer.recharts-scatter-symbol path {
+  width: 2px;
+  height: 2px;
+}
+
+
