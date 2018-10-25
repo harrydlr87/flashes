@@ -6,7 +6,7 @@ import PrivateRoute from './components/private-route';
 
 // Pages
 import Dashboard from '../pages/dashboard';
-import Plot from '../pages/plot';
+import Plot from '../pages/plot/zoom-exmaple';
 import Profile from '../pages/profile';
 
 const Routes = () => (

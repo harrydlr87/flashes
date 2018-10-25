@@ -28,6 +28,11 @@ body {
 
 .dashboard .table {
   flex-grow: 1;
+  text-align: center;
+}
+
+.dashboard .table .sourceType {
+  width: 30% !important;
 }
 
 .plot {

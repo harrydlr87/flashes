@@ -2,7 +2,6 @@ import React from "react";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { connect } from 'react-redux' ;
-import {login} from "../../../application/store/actions";
 
 const getColumns = (user) => {
 
@@ -21,6 +20,8 @@ const getColumns = (user) => {
       accessor: "plotIcon"
     },
     {
+      className: 'sourceType',
+      headerClassName: 'sourceType',
       Header: "Source Type",
       accessor: "src_type"
     },
@@ -28,14 +29,14 @@ const getColumns = (user) => {
       Header: "Mission",
       accessor: "mission",
     },
-    {
+    /*{
       Header: "BII",
       accessor: "BII"
     },
     {
       Header: "LII",
       accessor: "LII"
-    },
+    },*/
   ];
 
   if(user) {
