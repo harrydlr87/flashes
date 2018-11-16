@@ -4,7 +4,6 @@ import "react-table/react-table.css";
 import { connect } from 'react-redux' ;
 
 const getColumns = (user) => {
-
   const columns = [
     {
       Header: "Source Name",

@@ -21,17 +21,20 @@ body {
   width: 200px;
 }
 
-.dashboard {
+.container {
   padding: 0 50px 0 25px;
+}
+
+.sources {
   display: flex;
 }
 
-.dashboard .table {
+.sources .table {
   flex-grow: 1;
   text-align: center;
 }
 
-.dashboard .table .sourceType {
+.sources .table .sourceType {
   width: 30% !important;
 }
 
