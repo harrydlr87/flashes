@@ -14,7 +14,7 @@ class Filter extends Component {
 
   async componentWillMount() {
     const typeOptions = await getJson('/sources/field/src_type');
-    const missionOptions = await getJson('/sources/field/tool_name');
+    const missionOptions = await getJson('/sources/field/mission');
 
     this.setState({ typeOptions, missionOptions });
   }

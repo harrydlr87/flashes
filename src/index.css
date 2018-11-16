@@ -15,24 +15,42 @@ body {
 
 .header a {
   text-decoration: none;
-  color: white;
 }
 
 .header img {
   width: 200px;
 }
 
-.dashboard {
+.container {
   padding: 0 50px 0 25px;
+}
+
+.sources {
   display: flex;
 }
 
-.dashboard .table {
+.sources .table {
   flex-grow: 1;
+  text-align: center;
+}
+
+.sources .table .sourceType {
+  width: 30% !important;
 }
 
 .plot {
   margin: 0 auto;
   max-width: 75%;
 }
+
+.recharts-layer.recharts-scatter-symbol {
+  width: 2px;
+  height: 2px;
+}
+
+.recharts-layer.recharts-scatter-symbol path {
+  width: 2px;
+  height: 2px;
+}
+
 

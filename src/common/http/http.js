@@ -1,3 +1,5 @@
+import Auth from './auth';
+
 /**
  * Factory for creating an Error
  * @param hash
@@ -45,6 +47,7 @@ export const doFetch = (path, options = {}) => {
         ...options,
         headers: {
             ...options.headers,
+          ...Auth.credentials, // Bind credentials
         },
     };
 

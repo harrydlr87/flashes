@@ -1,5 +1,6 @@
 import React, { Fragment } from 'react';
 import { NavLink } from 'react-router-dom';
+import Login from './components/login';
 import Logo from '../../../common/assets/logo.png';
 
 const Layout = ({ children }) => (
@@ -8,6 +9,7 @@ const Layout = ({ children }) => (
           <NavLink exact to="/">
             <img src={Logo} alt="Flashes" />
           </NavLink>
+          <Login />
         </div>
         {children}
     </Fragment>

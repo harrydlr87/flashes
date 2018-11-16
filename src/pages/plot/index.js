@@ -1,65 +1,82 @@
-import React from 'react';
-import { ScatterChart, Scatter, XAxis, YAxis, CartesianGrid, Tooltip } from 'recharts';
+import React, { Component } from 'react';
 import getJson from "../../common/http/methods/get";
 
-const domain = ['dataMin', 'dataMax'];
+function parseCoords(data) {
+  const coordsList = data.split(/\r?\n/g);
+  return coordsList.reduce((acc, coords) => {
+    const [x, y] = coords.split(' ');
+    acc.x.push(parseFloat(x));
+    acc.y.push(parseFloat(y));
+    acc.colors.push('navy');
+    acc.radius.push(Math.random() * 0.4 + 5.7);
 
-class Plot extends React.Component {
+    return acc;
+  }, {x: [], y: [], colors: [], radius: []});
+}
+
+class Plot extends Component {
   state = {
-    source: {},
+    source: null,
+    data: null,
   };
+
+  async componentDidMount() {
+    const { id } = this.props.match.params;
+    const source = await getJson(`/sources/${id}`);
+
+    const data = {
+      lightCurves: parseCoords(source.data.lightCurves),
+      bayesianBlocks: null,
+      HIDDiagram: null,
+    };
+
+    this.setState({ source });
+
+    this.renderPlot(data.lightCurves);
+  }
+
+  renderPlot(data) {
+    const { source } = this.state;
+    const Bokeh = window.Bokeh;
+    const plt = Bokeh.Plotting;
+
+    // create a data source
+    const sourceData = new Bokeh.ColumnDataSource({ data });
+
+    // make the plot and add some tools
+    const tools = "pan,crosshair,wheel_zoom,box_zoom,reset,save";
+    const p = plt.figure({ title: source.source, tools: tools });
+
+    // call the circle glyph method to add some circle glyphs
+    p.circle({ field: "x" }, { field: "y" }, {
+      source: sourceData,
+      radius: data.radius,
+      fill_color: data.colors,
+      fill_alpha: 0.6,
+      line_color: null
+    });
+
+    // show the plot
+    plt.show(p, document.querySelector('#plot'));
+  }
 
   async componentWillMount() {
     const { id } = this.props.match.params;
     const source = await getJson(`/sources/${id}`);
-    this.setState({ source });
+
+    const data = {
+      lightCurves: parseCoords(source.data.lightCurves),
+      bayesianBlocks: null,
+      HIDDiagram: null,
+    };
+
+    this.setState({ source, data });
   }
 
   render() {
-    const { data, source } = this.state.source;
 
     return (
-      <section className="plot">
-        { data && data.lightCurves && data.lightCurves.length > 0 &&
-          <div>
-            <h2>{source}</h2>
-            <h4>Light Curves</h4>
-            <ScatterChart width={800} height={400} margin={{top: 20, right: 20, bottom: 20, left: 20}}>
-              <CartesianGrid />
-              <XAxis dataKey={'x'} type="number" name='days' unit='days' domain={domain} />
-              <YAxis dataKey={'y'} type="number" name='Flux (keV)' unit='keV' domain={domain} />
-              <Scatter name='A school' data={data.lightCurves} fill='#8884d8'/>
-              <Tooltip cursor={{strokeDasharray: '3 3'}}/>
-            </ScatterChart>
-          </div>
-        }
-        { data && data.bayesianBlocks && data.bayesianBlocks.length > 0 &&
-        <div>
-          <h2>{source}</h2>
-          <h4>Bayesian Blocks</h4>
-          <ScatterChart width={800} height={400} margin={{top: 20, right: 20, bottom: 20, left: 20}}>
-            <CartesianGrid />
-            <XAxis dataKey={'x'} type="number" name='days' unit='days' domain={domain} />
-            <YAxis dataKey={'y'} type="number" name='Flux (keV)' unit='keV' domain={domain} />
-            <Scatter name='A school' data={data.bayesianBlocks} fill='#8884d8'/>
-            <Tooltip cursor={{strokeDasharray: '3 3'}}/>
-          </ScatterChart>
-        </div>
-        }
-        { data && data.HIDDiagram && data.HIDDiagram.length > 0 &&
-        <div>
-          <h2>{source}</h2>
-          <h4>HID Diagram</h4>
-          <ScatterChart width={800} height={400} margin={{top: 20, right: 20, bottom: 20, left: 20}}>
-            <CartesianGrid />
-            <XAxis dataKey={'x'} type="number" name='days' unit='days' domain={domain} />
-            <YAxis dataKey={'y'} type="number" name='Flux (keV)' unit='keV' domain={domain} />
-            <Scatter name='A school' data={data.HIDDiagram} fill='#8884d8'/>
-            <Tooltip cursor={{strokeDasharray: '3 3'}}/>
-          </ScatterChart>
-        </div>
-        }
-      </section>
+      <div id="plot" />
     );
   }
 }

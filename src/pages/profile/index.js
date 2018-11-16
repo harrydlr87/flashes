@@ -4,7 +4,8 @@ import Container from '../../common/components/container';
 
 const Dashboard = () => (
   <Container>
-    <Sources />
+    <h1>My sources</h1>
+    <Sources activeFilters={{ subscribedSources: true }} />
   </Container>
 );
 
