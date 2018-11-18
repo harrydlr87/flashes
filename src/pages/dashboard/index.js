@@ -1,11 +1,18 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import Sources from '../../common/components/sources';
 import Container from '../../common/components/container';
 
-const Dashboard = () => (
+const Dashboard = ({ user }) => (
   <Container>
-    <Sources />
+    <Sources subscribedSources={user.subscribedSources} />
   </Container>
 );
 
-export default Dashboard;
+const mapStateToProps = (state) => ({
+  user: state.application.user,
+});
+
+const enhance = connect(mapStateToProps);
+
+export default enhance(Dashboard);

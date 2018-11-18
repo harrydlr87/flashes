@@ -11,47 +11,60 @@ const PlotLink = ({ id }) => <NavLink exact to={`/plot/${id}`}><FontAwesomeIcon 
 const Subscribe = ({ onClick }) => <span onClick={onClick}><FontAwesomeIcon icon="rss" /></span>;
 const UnSubscribe = ({ onClick }) => <span onClick={onClick}><FontAwesomeIcon icon="times" /></span>;
 
-const isSubscribedToSource = (user, source) => user.subscribedSources.includes(source._id);
+const isSubscribedToSource = (subscribedSources, source) => subscribedSources.includes(source._id);
 
 class Sources extends Component {
   state = {
     missions: [],
     sourcesData: {},
-    activeFilters: {
-      subscribedSources: this.props.activeFilters && this.props.activeFilters.subscribedSources,
-    },
+    activeFilters: {},
+    sources: this.props.sources,
   };
 
-  parseSources({ docs = [] }) {
-    const { user, subscribeToSource, unSubscribeFromSource } = this.props;
+  parseSources({ docs = [] }, sources) {
+    const {
+      subscribeToSource,
+      unSubscribeFromSource,
+      subscribedSources,
+    } = this.props;
 
-    return docs.map(source => ({
+    return docs.filter(source => sources ? sources.includes(source._id) : true).map(source => ({
       ...source,
       plotIcon: <PlotLink id={source._id} />,
-      actions: user && isSubscribedToSource(user, source)
+      actions: subscribedSources && isSubscribedToSource(subscribedSources, source)
         ? <UnSubscribe onClick={() => unSubscribeFromSource(source._id)} />
         : <Subscribe onClick={() => subscribeToSource(source._id)} />
     }));
   }
 
-  async componentWillMount() {
-    const activeFilters = this.state.activeFilters;
+  async getTableData(additionalData = {}) {
+    const { sources, activeFilters } = this.state;
+    const shouldRenderSources = !sources || (sources && sources.length);
     const missions = await getJson('/missions');
-    const sourcesData = await getJson('/sources', { ...activeFilters });
+    const sourcesData = shouldRenderSources ? await getJson('/sources', { ...activeFilters, sources, ...additionalData }) : [];
 
+    return { missions, sourcesData };
+  }
+
+  async componentWillMount() {
+    const { missions, sourcesData } = await this.getTableData();
+    this.setState({ missions, sourcesData });
+  }
+
+  async componentWillReceiveProps({ sources }) {
+    const { missions, sourcesData } = await this.getTableData({ sources });
     this.setState({ missions, sourcesData });
   }
 
   async onPageChange({ page, pageSize }) {
-    const activeFilters = this.state.activeFilters;
-    const sourcesData = await getJson('/sources', { page: page + 1, limit: pageSize, ...activeFilters });
-
+    const params = { page: page + 1, limit: pageSize };
+    const { sourcesData } = await this.getTableData(params);
     this.setState({ sourcesData });
   }
 
   async onFilter({ type, name, mission }) {
-    const activeFilters = { type, name, mission, subscribedSources: this.state.activeFilters.subscribedSources};
-    const sourcesData = await getJson('/sources', activeFilters);
+    const activeFilters = { type, name, mission, sources: this.state.sources };
+    const { sourcesData } = await this.getTableData(activeFilters);
 
     this.setState({
       sourcesData,
@@ -61,7 +74,7 @@ class Sources extends Component {
 
   render() {
     const { pages } = this.state.sourcesData;
-    const items = this.parseSources(this.state.sourcesData);
+    const items = this.parseSources(this.state.sourcesData, this.props.sources);
 
     return (
       <section className="sources">
@@ -77,10 +90,6 @@ class Sources extends Component {
   }
 }
 
-const mapStateToProps = (state) => ({
-  user: state.application.user,
-});
-
-const enhance = connect(mapStateToProps, { subscribeToSource, unSubscribeFromSource });
+const enhance = connect(null, { subscribeToSource, unSubscribeFromSource });
 
 export default enhance(Sources);
