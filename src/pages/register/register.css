@@ -1,0 +1,33 @@
+.register {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.register-form .field {
+  margin-bottom: 20px;
+}
+
+.register-form input {
+  background: white;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  margin-top: 6px;
+}
+
+.register-form .submit-container {
+  margin-top: 20px;
+}
+
+.register-form .submit-container button {
+  background: #4d9dd6;
+  padding: 13px 25px;
+  text-transform: uppercase;
+  border: none;
+  border-radius: 3px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}

@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux' ;
-import { login } from '../../../../../application/store/actions';
+import { login, logout } from '../../../../../application/store/actions';
 import './login.css';
 import { routes } from '../../../../config/routes-config';
 import { NavLink } from 'react-router-dom';
@@ -29,7 +29,7 @@ class Login extends React.Component {
   };
 
   render() {
-    const { user } = this.props;
+    const { user, logout } = this.props;
     const { error } = this.state;
     return(
       <div className="login">
@@ -38,11 +38,12 @@ class Login extends React.Component {
             <input type="text" name="email" placeholder="E-mail" ref={this.emailInputRef} />
             <input type="password" name="password" placeholder="Password" ref={this.passwordInputRef}  />
             <button type="submit">Login</button>
+            <NavLink exact to={routes.register.path}>Register</NavLink>
           </form>
         ) : (
           <div>
-            <p className="greet">Bienvenido</p>
-            <NavLink exact to={routes.profile.path}>Profile</NavLink>
+            <p className="greet">Welcome {user.name}</p>
+            <button type="submit" onClick={logout}>Logout</button>
           </div>
         )}
 
@@ -56,6 +57,6 @@ const mapStateToProps = (state) => ({
   user: state.application.user,
 });
 
-const enhance = connect(mapStateToProps, { login });
+const enhance = connect(mapStateToProps, { login, logout });
 
 export default enhance(Login);

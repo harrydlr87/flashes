@@ -9,8 +9,8 @@ body {
   padding: 20px;
   font-weight: bold;
   color: white;
-  display: block;
   margin-bottom: 20px;
+  display: flex;
 }
 
 .header a {
@@ -18,7 +18,14 @@ body {
 }
 
 .header img {
+  display: block;
   width: 200px;
+}
+
+.header .menu {
+  flex: 1;
+  align-self: flex-end;
+  margin: 0;
 }
 
 .container {

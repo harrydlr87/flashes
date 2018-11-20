@@ -9,6 +9,7 @@ import RoutesHanlder from '../common/components/routes-handler';
 import Dashboard from '../pages/dashboard';
 import Plot from '../pages/plot';
 import Profile from '../pages/profile';
+import Register from '../pages/register';
 
 const Routes = () => (
     <BrowserRouter>
@@ -16,6 +17,7 @@ const Routes = () => (
             <RoutesHanlder>
                 <Route exact path={routes.dashboard.path} component={Dashboard} />
                 <Route exact path={routes.plot.path} component={Plot} />
+                <Route exact path={routes.register.path} component={Register} />
                 <PrivateRoute exact path={routes.profile.path} component={Profile} />
             </RoutesHanlder>
         </Layout>

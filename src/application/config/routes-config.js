@@ -12,4 +12,7 @@ export const routes = {
     profile: {
       path: '/profile',
     },
+    register: {
+      path: '/register',
+    },
 };

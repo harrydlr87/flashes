@@ -1,6 +1,6 @@
 import { handleActions } from 'redux-actions';
 import { mergePayloadInStateProperty, mergeState } from '../../common/util/state';
-import { getUserData, subscribeToSource, unSubscribeFromSource } from './actions';
+import { getUserData, subscribeToSource, unSubscribeFromSource, logout } from './actions';
 
 const initialState = {
   user: null,
@@ -28,6 +28,9 @@ export default handleActions({
     });
   },
   [getUserData]: mergePayloadInStateProperty('user'),
+  [logout]: (state) => {
+    return mergeState(state, initialState)
+  },
 }, initialState);
 
 /** Selectors */

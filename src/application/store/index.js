@@ -2,12 +2,14 @@ import { combineReducers, createStore, applyMiddleware } from 'redux';
 import ReduxThunk from 'redux-thunk';
 import ReduxFsaThunk from 'redux-thunk-fsa';
 import ReduxPromise from 'redux-promise';
+import { reducer as form } from 'redux-form';
 
 // Reducers
 import application from './reducer';
 
 const rootReducer = combineReducers({
   application,
+  form,
 });
 
 const developmentMode = process.env.NODE_ENV === 'development';

@@ -5,7 +5,7 @@ import Container from '../../common/components/container';
 
 const Dashboard = ({ user }) => (
   <Container>
-    <Sources subscribedSources={user.subscribedSources} />
+    <Sources subscribedSources={user && user.subscribedSources} />
   </Container>
 );
 
