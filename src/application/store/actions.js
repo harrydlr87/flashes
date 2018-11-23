@@ -19,12 +19,15 @@ export const getUserData = createAction('application.user-data', async (email, p
 });
 
 /** Performs user registration  */
-export const register = createAction('application.register', ({ name, email, password }) => async dispatch => {
-  debugger;
-  const { token } = await postJson('/users/register', { name, email, password });
-  localStorage.setItem('token', token);
-  Auth.setCredentials({ token });
-  dispatch(getUserData());
+export const register = createAction('application.register', ({ name, email, password }, onError) => async dispatch => {
+  try {
+    const { token } = await postJson('/users/register', { name, email, password });
+    localStorage.setItem('token', token);
+    Auth.setCredentials({ token });
+    dispatch(getUserData());
+  } catch(error) {
+    throw onError(error)
+  }
 });
 
 /** Performs the login action authenticating the user and retrieving the user data  */

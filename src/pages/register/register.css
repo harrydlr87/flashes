@@ -9,6 +9,10 @@
   margin-bottom: 20px;
 }
 
+.register-form .field .field-error {
+  color: red;
+}
+
 .register-form input {
   background: white;
   padding: 10px 15px;

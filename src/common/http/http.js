@@ -8,6 +8,7 @@ import Auth from './auth';
 export const createHttpError = (hash) => {
     const error = new Error(`${hash.statusCode} ${hash.statusMessage}`);
     error.type = 'httpError';
+    error.message = hash.message;
     error.statusCode = hash.statusCode;
     error.http = hash;
     return error;
@@ -28,12 +29,16 @@ const createRequestTimeout = setTimeoutReference => new Promise((resolve, reject
  *
  * @param response
  */
-export const checkStatus = (response) => {
+export const checkStatus = async (response) => {
     if (response.status >= 200 && response.status < 300) {
         return response;
     }
-
-    throw createHttpError({ statusCode: response.status, statusMessage: response.statusText });
+    const requestBody = await response.json();
+    throw createHttpError({
+      statusCode: response.status,
+      statusMessage: response.statusText,
+      message: requestBody.message,
+    });
 };
 
 /**
