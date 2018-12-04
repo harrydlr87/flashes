@@ -76,7 +76,10 @@ class Plot extends Component {
   render() {
 
     return (
-      <div id="plot" />
+      <section className="container">
+        <div id="plot" />
+      </section>
+
     );
   }
 }

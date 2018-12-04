@@ -2,7 +2,31 @@
 
 }
 
+.login input {
+  background: white;
+  padding: 10px 15px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  margin-right: 5px;
+}
+
+.login .login-button {
+  background: white;
+  padding: 9px 25px;
+  text-transform: uppercase;
+  border: 2px solid #4d9dd6;
+  border-radius: 3px;
+  color: #4d9dd6;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
+  margin-right: 5px;
+}
+
 .greet {
+  margin-top: 0;
   color: black;
   font-size: 20px;
+  display: inline-block;
+  margin-right: 10px;
 }

@@ -1,10 +1,13 @@
 import React from 'react'
 import { connect } from 'react-redux';
 import { compose } from 'recompose';
+import { withRouter } from "react-router";
 import { Field, reduxForm, SubmissionError } from 'redux-form';
 import { register } from '../../application/store/actions';
+import Error from './components/submit-error';
 import { email, minLength, required } from '../../common/util/form-validations';
 import './register.css';
+import { routes } from "../../application/config/routes-config";
 
 const renderField = ({
   input,
@@ -21,30 +24,30 @@ const renderField = ({
   </div>
 );
 
-const submit = (values, dispatch) => {
-  const onError = (response) => {
-    return new SubmissionError({
-      _error: response.message
-    })
-  };
-
-  return dispatch(register(values, onError));
-};
-
 const SimpleForm = props => {
   const {
     handleSubmit,
     pristine,
     submitting,
-    error,
+    register,
+    history,
   } = props;
 
-  // TODO handle server errors
+  const submit = (values) => new Promise(async (resolve, reject) => {
+    const { error, payload } = await register(values);
+    if (error) {
+      reject(payload);
+    } else {
+      history.push(routes.dashboard.path);
+    }
+  }).catch((error) => {
+    throw new SubmissionError({ error })
+  });
 
   return (
     <section className="register">
       <h1>Register</h1>
-      <form className="register-form" onSubmit={handleSubmit}>
+      <form className="register-form" onSubmit={handleSubmit(submit)}>
         <Field
           label="Name"
           name="name"
@@ -69,7 +72,14 @@ const SimpleForm = props => {
           placeholder="Password"
           validate={[minLength(6), required]}
         />
-        { error && <div>{error}</div> }
+        <Field
+          name="confirmPassword"
+          label="Repeat Password"
+          component={renderField}
+          type="password"
+          placeholder="Repeat Password"
+        />
+        <Error />
         <div className="submit-container">
           <button type="submit" disabled={pristine || submitting}>Submit</button>
         </div>
@@ -78,11 +88,24 @@ const SimpleForm = props => {
   )
 };
 
+const validate = values => {
+  const errors = {};
+  if (!values.confirmPassword ) {
+    errors.confirmPassword = 'Required';
+  } else if (values.confirmPassword !== values.password) {
+    errors.confirmPassword = 'Password mismatched' ;
+  }
+  return errors;
+};
+
+
 const enhance = compose(
+  withRouter,
+  connect(null, { register }),
   reduxForm({
     form: 'register',
-    onSubmit: submit
-  })
+    validate,
+  }),
 );
 
-export default enhance(SimpleForm);
+export default (enhance(SimpleForm));

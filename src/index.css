@@ -29,11 +29,15 @@ body {
 }
 
 .container {
-  padding: 0 50px 0 25px;
+  padding: 0 20px 0 20px;
 }
 
 .sources {
   display: flex;
+}
+
+.sources .plot-icon {
+  color: #4d9dd6;
 }
 
 .sources .table {
@@ -58,6 +62,19 @@ body {
 .recharts-layer.recharts-scatter-symbol path {
   width: 2px;
   height: 2px;
+}
+
+
+.blue-button {
+  background: #4d9dd6;
+  padding: 9px 25px;
+  text-transform: uppercase;
+  border: 2px solid transparent;
+  border-radius: 3px;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 14px;
 }
 
 

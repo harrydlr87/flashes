@@ -1,10 +1,11 @@
 .menu-items a {
-  font-weight: 300;
-  font-size: 15px;
+  font-size: 14px;
   padding: 5px 15px;
   color: black;
+  text-transform: uppercase;
+  font-weight: bold;
 }
 
 .menu-items a.active {
-  text-decoration: underline;
+  color: #4d9dd6;
 }

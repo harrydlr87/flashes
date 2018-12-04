@@ -3,16 +3,16 @@
  * @type Object
  */
 export const routes = {
-    dashboard: {
-        path: '/',
-    },
-    plot: {
-        path: '/plot/:id',
-    },
-    profile: {
-      path: '/profile',
-    },
-    register: {
-      path: '/register',
-    },
+  dashboard: {
+    path: '/',
+  },
+  plot: {
+    path: '/plot/:id',
+  },
+  profile: {
+    path: '/profile',
+  },
+  register: {
+    path: '/register',
+  },
 };

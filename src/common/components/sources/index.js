@@ -7,7 +7,7 @@ import Table from '../table';
 import Filter from '../filter';
 import { subscribeToSource, unSubscribeFromSource } from '../../../application/store/actions';
 
-const PlotLink = ({ id }) => <NavLink exact to={`/plot/${id}`}><FontAwesomeIcon icon="chart-bar" /></NavLink>;
+const PlotLink = ({ id }) => <NavLink className="plot-icon" exact to={`/plot/${id}`}><FontAwesomeIcon icon="chart-bar" /></NavLink>;
 const Subscribe = ({ onClick }) => <span onClick={onClick}><FontAwesomeIcon icon="rss" /></span>;
 const UnSubscribe = ({ onClick }) => <span onClick={onClick}><FontAwesomeIcon icon="times" /></span>;
 
@@ -38,10 +38,10 @@ class Sources extends Component {
   }
 
   async getTableData(additionalData = {}) {
-    const { sources, activeFilters } = this.state;
+    const { sources, activeFilters, pagination } = this.state;
     const shouldRenderSources = !sources || (sources && sources.length);
     const missions = await getJson('/missions');
-    const sourcesData = shouldRenderSources ? await getJson('/sources', { ...activeFilters, sources, ...additionalData }) : [];
+    const sourcesData = shouldRenderSources ? await getJson('/sources', { ...activeFilters, sources, ...pagination, ...additionalData }) : [];
 
     return { missions, sourcesData };
   }
@@ -59,7 +59,7 @@ class Sources extends Component {
   async onPageChange({ page, pageSize }) {
     const params = { page: page + 1, limit: pageSize };
     const { sourcesData } = await this.getTableData(params);
-    this.setState({ sourcesData });
+    this.setState({ sourcesData, pagination: params });
   }
 
   async onFilter({ type, name, mission }) {

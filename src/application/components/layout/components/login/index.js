@@ -1,5 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux' ;
+import { compose, branch, renderNothing } from 'recompose';
+import { withRouter } from "react-router";
 import { login, logout } from '../../../../../application/store/actions';
 import './login.css';
 import { routes } from '../../../../config/routes-config';
@@ -18,6 +20,10 @@ class Login extends React.Component {
     this.passwordInput = passwordInput;
   };
 
+  goToDashBoard = () => {
+    this.props.history.push(routes.dashboard.path);
+  };
+
   onSubmit = async (e) => {
     e.preventDefault();
     const { passwordInput, emailInput } = this;
@@ -25,6 +31,8 @@ class Login extends React.Component {
 
     if(response.error) {
       this.setState({ error: response.error });
+    } else {
+      this.goToDashBoard();
     }
   };
 
@@ -37,13 +45,13 @@ class Login extends React.Component {
           <form onSubmit={this.onSubmit}>
             <input type="text" name="email" placeholder="E-mail" ref={this.emailInputRef} />
             <input type="password" name="password" placeholder="Password" ref={this.passwordInputRef}  />
-            <button type="submit">Login</button>
-            <NavLink exact to={routes.register.path}>Register</NavLink>
+            <button className="login-button" type="submit">Login</button>
+            <NavLink className="blue-button" exact to={routes.register.path}>Register</NavLink>
           </form>
         ) : (
           <div>
             <p className="greet">Welcome {user.name}</p>
-            <button type="submit" onClick={logout}>Logout</button>
+            <button className="blue-button" type="submit" onClick={() => logout(this.goToDashBoard)}>Logout</button>
           </div>
         )}
 
@@ -57,6 +65,10 @@ const mapStateToProps = (state) => ({
   user: state.application.user,
 });
 
-const enhance = connect(mapStateToProps, { login, logout });
+const enhance = compose(
+  withRouter,
+  branch(({ location }) => location.pathname === routes.register.path, renderNothing),
+  connect(mapStateToProps, { login, logout }),
+);
 
 export default enhance(Login);

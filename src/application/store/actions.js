@@ -20,14 +20,10 @@ export const getUserData = createAction('application.user-data', async (email, p
 
 /** Performs user registration  */
 export const register = createAction('application.register', ({ name, email, password }, onError) => async dispatch => {
-  try {
-    const { token } = await postJson('/users/register', { name, email, password });
-    localStorage.setItem('token', token);
-    Auth.setCredentials({ token });
-    dispatch(getUserData());
-  } catch(error) {
-    throw onError(error)
-  }
+  const { token } = await postJson('/users/register', { name, email, password });
+  localStorage.setItem('token', token);
+  Auth.setCredentials({ token });
+  dispatch(getUserData());
 });
 
 /** Performs the login action authenticating the user and retrieving the user data  */
@@ -41,8 +37,9 @@ export const login = createAction('application.login', (email, password) => asyn
 });
 
 /** Performs the logout action removing the current logged user and it's token  */
-export const logout = createAction('application.logout', () => {
+export const logout = createAction('application.logout', (callback) => {
   localStorage.removeItem('token');
   Auth.removeCredentials();
+  callback();
 });
 
